@@ -5,7 +5,7 @@ public abstract class Simulation {
 	private int startTime;
 	private int endTime;
 	//Status
-	public int time;
+	public static int time;
 	
 	//Function
 	public abstract void save();
@@ -32,13 +32,10 @@ public abstract class Simulation {
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
 	}
-	public int getTime() {
-		return time;
-	}
-	public void setTime(int time) {
-		this.time = time;
-	}
 	
+	public static int getCurrentTime(){
+		return time;
+	}	
 
 	
 

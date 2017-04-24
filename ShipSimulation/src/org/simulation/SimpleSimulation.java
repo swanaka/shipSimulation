@@ -19,7 +19,7 @@ public class SimpleSimulation extends Simulation{
 
 	@Override
 	public void save() {
-		int now = getTime();
+		int now = getCurrentTime();
 		System.out.println("Now: " + now + " Saved!");
 		
 	}

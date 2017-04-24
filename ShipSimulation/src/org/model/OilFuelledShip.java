@@ -1,6 +1,10 @@
 package org.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import org.simulation.Simulation;
 
 public class OilFuelledShip extends Ship {
 	
@@ -19,7 +23,10 @@ public class OilFuelledShip extends Ship {
 		
 		Engine engine = new OEngine(maxBHP,SFOC0,SFOC1,SFOC2);
 		setEngine(engine);
+
+		super.status = Status.TRANSPORT;
 	}
+	
 	public OilFuelledShip(HashMap<String, String> Param) {
 		double c0 = Double.parseDouble(Param.get("c0"));
 		double c1 = Double.parseDouble(Param.get("c1"));
@@ -46,17 +53,60 @@ public class OilFuelledShip extends Ship {
 		Engine engine = new OEngine(maxBHP,SFOC0,SFOC1,SFOC2);
 		setEngine(engine);
 
+		super.status = Status.TRANSPORT;
+
 	}
+	
 	@Override
 	public void timeNext() {
-		// TODO Auto-generated method stub
+		
+		switch(super.status){
+			case TRANSPORT:
+				transport();
+			case WAIT:
+				super.waitingTime ++;
+			case BERTH:
+			case LOADING:
+			case UNLOADING:
+			case BUNKERING:
+		}
 
 	}
 
 	@Override
 	public void transport() {
-		// TODO Auto-generated method stub
 
+		// 1. Get planned distance
+		int now = Simulation.time;
+		int plannedTime = super.schedule.getPlannedTime();
+		double distance = super.remainingDistance; 
+		double plannedDistance = calcPlannedDistance(now, plannedTime, distance);
+
+		// 2. Calculate ship speed
+		double speed = plannedDistance;
+
+		// 3. Calculate FOC
+		double foc = super.engine.calcFOC(speed);
+
+		// 4. Update remainng distance, fuel, gas emission
+		// TO-DO update Location
+		double actualDis = calcActualDistance(distance);
+		super.remainingDistance -= actualDis;
+		super.amountOfFuel -= foc;
+		super.emssionedGas += calcGasEmission(foc);
+
+	}
+
+	private double calcActualDistance(double distance){
+		return distance;
+	}
+
+	private double calcPlannedDistance(int now, int plannedTime, double distance){
+		return distance / (plannedTime - now);
+	}
+
+	private double calcGasEmission(double foc){
+		return foc;
 	}
 	
 	private class OHull extends Hull{
@@ -141,5 +191,42 @@ public class OilFuelledShip extends Ship {
 		
 	
 	}
+
+	public class OSchedule extends ShipSchedule{
+		private List<HashMap<String,Object>> scheduleList;
+
+		private OSchedule(int startTime, int endTime, Port departure, Port destination){
+			scheduleList = new ArrayList<HashMap<String,Object>>();
+			HashMap<String, Object> schedule = new HashMap<String, Object>();
+			schedule.put("startTime", startTime);
+			schedule.put("endTime", endTime);
+			schedule.put("departure", departure);
+			schedule.put("destination", destination);
+			scheduleList.add(schedule);
+
+		}
+		
+		@Override
+		public void add(int startTime, int endTime, Port departure, Port destination){
+
+			HashMap<String, Object> schedule = new HashMap<String, Object>();
+			schedule.put("startTime", startTime);
+			schedule.put("endTime", endTime);
+			schedule.put("departure", departure);
+			schedule.put("destination", destination);
+			this.scheduleList.add(schedule);
+		}
+		
+		@Override
+		public void pop(){
+			this.scheduleList.remove(0);
+		}
+		
+		@Override
+		public int getPlannedTime() {
+			return (int) scheduleList.get(0).get("endTime");
+		}
+	}
+
 
 }

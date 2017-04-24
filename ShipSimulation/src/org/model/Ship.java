@@ -4,20 +4,24 @@ import org.util.Location;
 
 public abstract class Ship {
 	//Congiguration of ship
-	private Hull hull;
-	private Engine engine;
-	private FuelTank fuelTank;
-	private Propeller propeller;
-	private ShipSchedule shipSchedule;
-	private ShipOperator owner;
-	private String name;
+	protected Hull hull;
+	protected Engine engine;
+	protected FuelTank fuelTank;
+	protected Propeller propeller;
+	protected ShipSchedule schedule;
+	protected ShipOperator owner;
+	protected String name;
 
 	//Status of ship
-	private Location loc;
-	private double amountOfFuel;
-	private double rationOfAccident;
-	private double amountOfCargo;
-	private double remainingDistance;
+	protected Location loc;
+	protected double amountOfFuel;
+	protected double rationOfAccident;
+	protected double amountOfCargo;
+	protected double remainingDistance;
+	protected double cashFlow;
+	protected double emssionedGas;
+	protected Status status;
+	protected int waitingTime;
 	
 	//Function
 	public abstract void timeNext();
@@ -94,12 +98,12 @@ public abstract class Ship {
 		this.propeller = propeller;
 	}
 
-	public ShipSchedule getShipSchedule() {
-		return shipSchedule;
+	public ShipSchedule getSchedule() {
+		return schedule;
 	}
 
-	public void setShipSchedule(ShipSchedule shipSchedule) {
-		this.shipSchedule = shipSchedule;
+	public void setSchedule(ShipSchedule shipSchedule) {
+		this.schedule = shipSchedule;
 	}
 
 	public ShipOperator getOwner() {
@@ -109,8 +113,15 @@ public abstract class Ship {
 		this.owner = owner;
 	}
 
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	//Abstract class
+
+	//Abstract inner class
 	public abstract class Hull{
 
 		public abstract double calcEHP(double v);
@@ -128,6 +139,18 @@ public abstract class Ship {
 	}
 
 	public abstract class ShipSchedule{
+		public abstract void add(int startTime, int endTime, Port departure, Port destination);
+		public abstract void pop();
+		public abstract int getPlannedTime();
+	}
+
+	public enum Status{
+		TRANSPORT,
+		WAIT,
+		BERTH,
+		LOADING,
+		UNLOADING,
+		BUNKERING;
 	}
 
 
