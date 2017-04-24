@@ -5,12 +5,8 @@ public class Status {
 		TRANSPORT,
 		WAIT,
 		BERTH,
-		BERTH_LOADING_BUNKERING,
-		BERTH_UNLOADING_BUNKERING,
-		BERTH_LOADING,
-		BERTH_UNLOADING,
-		BERTH_BUNKERING,
 	}
+	
 	
 	public enum FuelType{
 		OIL("Oil"), 

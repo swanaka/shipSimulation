@@ -68,18 +68,6 @@ public class SimpleShip extends Ship {
 				super.waitingTime ++;
 			case BERTH:
 				break;
-			case BERTH_BUNKERING:
-				break;
-			case BERTH_LOADING:
-				break;
-			case BERTH_LOADING_BUNKERING:
-				break;
-			case BERTH_UNLOADING:
-				break;
-			case BERTH_UNLOADING_BUNKERING:
-				break;
-			default:
-				break;
 
 		}
 

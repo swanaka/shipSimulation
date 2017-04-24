@@ -2,7 +2,7 @@ package exec;
 
 import org.model.Fleet;
 import org.model.Market;
-import org.model.OilFuelledShip;
+import org.model.SimpleShip;
 import org.model.PortNetwork;
 import org.model.Ship;
 import org.model.SimpleFleet;
@@ -24,10 +24,12 @@ public class Main {
 	
 	private static Fleet loadInitialFleet(){
 		Fleet fleet = new SimpleFleet(1);
-		Ship ship = new OilFuelledShip(CSVReader.forParam("../../data/ship_config.csv"));
+		Ship ship = new SimpleShip(CSVReader.forParam("../../data/ship_config.csv"));
 		fleet.add(ship);
 		return fleet;
 	}
+	
+	
 	
 	
 }
