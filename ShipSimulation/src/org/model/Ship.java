@@ -1,5 +1,6 @@
 package org.model;
 
+import org.model.Status.ShipStatus;
 import org.util.Location;
 
 public abstract class Ship {
@@ -20,7 +21,7 @@ public abstract class Ship {
 	protected double remainingDistance;
 	protected double cashFlow;
 	protected double emssionedGas;
-	protected Status status;
+	protected ShipStatus status;
 	protected int waitingTime;
 	
 	//Function
@@ -144,14 +145,7 @@ public abstract class Ship {
 		public abstract int getPlannedTime();
 	}
 
-	public enum Status{
-		TRANSPORT,
-		WAIT,
-		BERTH,
-		LOADING,
-		UNLOADING,
-		BUNKERING;
-	}
+	
 
 
 }

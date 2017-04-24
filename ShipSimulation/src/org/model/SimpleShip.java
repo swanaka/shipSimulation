@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.model.Status.ShipStatus;
 import org.simulation.Simulation;
 
-public class OilFuelledShip extends Ship {
+public class SimpleShip extends Ship {
 	
 	//kinetic viscous coefficient
 	private final double mu = 1.4267E-06;
 	private final double rho = 101.9515;
 	
-	public OilFuelledShip(double c0, double c1, double c2, double l, double k, double s,
+	public SimpleShip(double c0, double c1, double c2, double l, double k, double s,
 			double etaH, double etaR, double eta0, double etaTau, double etaM,
 			double maxBHP, double SFOC0, double SFOC1, double SFOC2){
 		Hull hull = new OHull(c0,c1,c2,l,k,s);
@@ -24,10 +25,10 @@ public class OilFuelledShip extends Ship {
 		Engine engine = new OEngine(maxBHP,SFOC0,SFOC1,SFOC2);
 		setEngine(engine);
 
-		super.status = Status.TRANSPORT;
+		super.status = ShipStatus.TRANSPORT;
 	}
 	
-	public OilFuelledShip(HashMap<String, String> Param) {
+	public SimpleShip(HashMap<String, String> Param) {
 		double c0 = Double.parseDouble(Param.get("c0"));
 		double c1 = Double.parseDouble(Param.get("c1"));
 		double c2 = Double.parseDouble(Param.get("c2"));
@@ -53,7 +54,7 @@ public class OilFuelledShip extends Ship {
 		Engine engine = new OEngine(maxBHP,SFOC0,SFOC1,SFOC2);
 		setEngine(engine);
 
-		super.status = Status.TRANSPORT;
+		super.status = ShipStatus.TRANSPORT;
 
 	}
 	
@@ -66,9 +67,20 @@ public class OilFuelledShip extends Ship {
 			case WAIT:
 				super.waitingTime ++;
 			case BERTH:
-			case LOADING:
-			case UNLOADING:
-			case BUNKERING:
+				break;
+			case BERTH_BUNKERING:
+				break;
+			case BERTH_LOADING:
+				break;
+			case BERTH_LOADING_BUNKERING:
+				break;
+			case BERTH_UNLOADING:
+				break;
+			case BERTH_UNLOADING_BUNKERING:
+				break;
+			default:
+				break;
+
 		}
 
 	}
