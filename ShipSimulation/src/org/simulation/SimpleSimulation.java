@@ -6,11 +6,11 @@ import org.model.Port;
 import org.model.PortNetwork;
 
 public class SimpleSimulation extends Simulation{
-	
+
 	private Fleet fleet;
 	private PortNetwork portNetwork;
 	private Market market;
-	
+
 	public SimpleSimulation(Fleet fleet, PortNetwork portNetwork, Market market,int endTime){
 		this.fleet = fleet;
 		this.portNetwork = portNetwork;
@@ -22,7 +22,7 @@ public class SimpleSimulation extends Simulation{
 	public void save() {
 		int now = getCurrentTime();
 		System.out.println("Now: " + now + " Saved!");
-		
+
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class SimpleSimulation extends Simulation{
 		}
 		fleet.timeNext();
 		portNetwork.timeNext();
-		
-		
+
+		// Sample comment by Shiraishi
 	}
 
 }
