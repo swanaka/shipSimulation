@@ -34,7 +34,7 @@ public class SimpleSimulation extends Simulation{
 		fleet.timeNext();
 		portNetwork.timeNext();
 
-		// Sample comment by Shiraishi
+		// test comment by shiraishi
 	}
 
 }
