@@ -6,6 +6,21 @@ public class Status {
 		WAIT,
 		BERTH,
 	}
+
+	public enum BunkeringStatus{
+		YES,
+		NO,
+	}
+
+	public enum LoadingStatus{
+		LOADING,
+		UNLOADING,
+		NO,
+	}
+	public enum MaintenanceStatus{
+		YES,
+		NO,
+	}
 	
 	
 	public enum FuelType{
