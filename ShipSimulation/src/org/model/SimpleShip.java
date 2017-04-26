@@ -78,7 +78,7 @@ public class SimpleShip extends Ship {
 
 		// 1. Get planned distance
 		int now = Simulation.time;
-		int plannedTime = super.schedule.getPlannedTime();
+		int plannedTime = super.schedule.get(0).getEndTime();
 		double distance = super.remainingDistance; 
 		double plannedDistance = calcPlannedDistance(now, plannedTime, distance);
 
@@ -95,6 +95,14 @@ public class SimpleShip extends Ship {
 		super.amountOfFuel -= foc;
 		super.emssionedGas += calcGasEmission(foc);
 
+	}
+	
+	@Override
+	public void appropriateRevenue() {
+		Contract contract = super.schedule.get(0);
+		double revenue = contract.getIncome() + contract.getPenalty(Simulation.time);
+		super.owner.addCashFlow(revenue);
+		
 	}
 
 	private double calcActualDistance(double distance){
@@ -192,41 +200,35 @@ public class SimpleShip extends Ship {
 	
 	}
 
-	public class OSchedule extends ShipSchedule{
-		private List<HashMap<String,Object>> scheduleList;
+	public class OContract extends Contract{
+		
+		private double freightRate;
+		private double penaltyRate;
 
-		private OSchedule(int startTime, int endTime, Port departure, Port destination){
-			scheduleList = new ArrayList<HashMap<String,Object>>();
-			HashMap<String, Object> schedule = new HashMap<String, Object>();
-			schedule.put("startTime", startTime);
-			schedule.put("endTime", endTime);
-			schedule.put("departure", departure);
-			schedule.put("destination", destination);
-			scheduleList.add(schedule);
+		private OContract(int startTime, int endTime, Port departure, Port destination){
+			super.setStartTime(startTime);
+			super.setEndTime(endTime);
+			super.setDeparture(departure);
+			super.setDestination(destination);
 
+		}
+
+		@Override
+		public double getIncome() {
+			return freightRate * super.getCargoAmount();
+		}
+
+		@Override
+		public double getPenalty(int time) {
+			if (time > super.getEndTime()){
+				return penaltyRate * (super.getEndTime() - time);
+			}
+			else return 0;
 		}
 		
-		@Override
-		public void add(int startTime, int endTime, Port departure, Port destination){
-
-			HashMap<String, Object> schedule = new HashMap<String, Object>();
-			schedule.put("startTime", startTime);
-			schedule.put("endTime", endTime);
-			schedule.put("departure", departure);
-			schedule.put("destination", destination);
-			this.scheduleList.add(schedule);
-		}
-		
-		@Override
-		public void pop(){
-			this.scheduleList.remove(0);
-		}
-		
-		@Override
-		public int getPlannedTime() {
-			return (int) scheduleList.get(0).get("endTime");
-		}
 	}
+
+	
 
 
 }

@@ -4,82 +4,146 @@ import java.util.HashMap;
 
 import org.model.Status.FuelType;
 import org.model.Status.LoadingType;
+import org.model.Status.ShipStatus;
 
 public class SimplePort extends Port {
 	
-	public SimplePort(HashMap<String, String> param, int num){
-		super();
-		for (int i=0;i<num;i++){
-			createPortFacility(param);
-		}
+	public SimplePort(String name){
+		super(name);
 	}
 	
-	public SimplePort(HashMap<String, String>[] paramList){
-		super();
-		for (HashMap<String, String> param : paramList){
-			createPortFacility(param);
-		}
-	}
 	
-	private void createPortFacility(HashMap<String, String> param){
+	@Override
+	public void addPortFacility(HashMap<String, String> param){
+		String name = param.get("Name");
+		super.name = name;
 		FuelType fuelType = FuelType.valueOf(param.get("FuelType"));
 		LoadingType loadingType = LoadingType.valueOf(param.get("LoadingType"));
 		double bunkeringCapacity = Double.parseDouble(param.get("BunkeringCapacity"));
 		double loadingCapacity = Double.parseDouble(param.get("LoadingCapacity"));
-		PortFacility port = new SimplePortFacitliy(fuelType, loadingType, bunkeringCapacity, loadingCapacity);
-		super.facilities.add(port);
+		double berthingFee = Double.parseDouble(param.get("BerthinFee"));
+		PortFacility facility = new SimplePortFacitliy(fuelType, loadingType, bunkeringCapacity, loadingCapacity, berthingFee);
+		super.facilities.add(facility);
+	}
+	
+	@Override
+	public void addPortFacilities(HashMap<String, String>param, int num){
+		for (int i=0;i<num;i++){
+			addPortFacility(param);
+		}
+	}
+	
+	@Override
+	public void addPortFacilities(HashMap<String, String>[] paramList){
+		for (HashMap<String, String> param : paramList){
+			addPortFacility(param);
+		}
 	}
 
 	@Override
-	public void timeNext() {
-		// 1. Check the occupied and # of waiting ship and If it is available, change the ship's status => BERTH
-		// 2. BERTH, BUNKERING, LOADING, UNLOADING, Port provide service,
-		// 3. Check the ship's status and update ships' status and port status
-
-	}
-
-
-	@Override
-	public void loading(Ship ship) {
-		// TODO Auto-generated method stub
+	public void loading() {
+		for (PortFacility facility : super.facilities){
+			facility.loading();
+		}
 
 	}
 
 	@Override
 	public void unloading(Ship ship) {
-		// TODO Auto-generated method stub
+		for (PortFacility facility : super.facilities){
+			facility.unloading();
+		}
 
 	}
 
 	@Override
-	public void maintenance(Ship ship) {
-		// TODO Auto-generated method stub
+	public void maintenance() {
+		for (PortFacility facility : super.facilities){
+			facility.maintenance();
+		}
 
 	}
 
 
-	@Override
-	public void gatewayForBerth() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 	@Override
-	public void checkShipStatus(Ship ship) {
-		// TODO Auto-generated method stub
-		
+	public PortFacility checkBerthing(Ship ship) {
+		for (PortFacility facility : super.facilities){
+			if(facility.match(ship)){
+				return facility;
+			}
+		}
+		return null;
 	}
 
 	//InnerClass
 	private class SimplePortFacitliy extends PortFacility{
+		
+		private double berthingFee;
 
-		public SimplePortFacitliy(FuelType fuelType, LoadingType loadingType, double bunkeringCapacity, double loadingCapacity){
+		public SimplePortFacitliy(FuelType fuelType, LoadingType loadingType, double bunkeringCapacity, double loadingCapacity, 
+				double berthingFee){
 			super.occupiedFlag = 0;
 			super.bunkeringCapacity = bunkeringCapacity;
 			super.fuelType = fuelType;
 			super.loadingType = loadingType;
 			super.loadingCapacity = loadingCapacity;
+			this.berthingFee = berthingFee;
+		}
+
+		public void accept(Ship ship){
+			super.berthingShip = ship;
+			ship.setShipStatus(ShipStatus.BERTH);
+			ship.appropriateRevenue();
+		}
+		public void berthing(){
+			loading();
+			unloading();
+			bunkering();
+			maintenance();
+			berthingShip.owner.addCashFlow(-1*this.berthingFee);
+			getOperator().addCashFlow(this.berthingFee);
+		}
+		public void loading(){
+			switch(super.berthingShip.lStatus){
+			case LOADING:
+				super.berthingShip.setAmountOfCargo(super.berthingShip.getAmountOfCargo() + loadingCapacity);
+			default:;
+			}
+		}
+
+		public void unloading(){
+			switch(super.berthingShip.lStatus){
+			case LOADING:
+				super.berthingShip.setAmountOfCargo(super.berthingShip.getAmountOfCargo() -  loadingCapacity);
+			default:;
+			}
+		}
+		
+		public void maintenance(){
+			switch(super.berthingShip.mStatus){
+			case YES:
+				//TO-DO maintenance
+			default:;
+			}
+		}
+
+		public boolean match(Ship ship){
+			if (super.occupiedFlag == 1) return false;
+			if (super.fuelType != ship.getFuelType()) return false;
+			if (super.loadingType != ship.getCargoType()) return false;
+			return true;
+		}
+
+		@Override
+		public void bunkering() {
+			switch(super.berthingShip.bStatus){
+			case YES:
+				super.berthingShip.setAmountOfFuel(super.berthingShip.getAmountOfFuel() + bunkeringCapacity);
+			default:;
+			}
+			
 		}
 
 	}
