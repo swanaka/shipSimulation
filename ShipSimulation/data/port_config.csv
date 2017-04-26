@@ -1,0 +1,14 @@
+PortName,,,
+Japan,,,
+FuelType,LoadingType,BunkeringCapacity,LoadingCapacity
+Oil,Container,104,137
+1,,,
+PortName,,,
+Los Angels,,,
+FuelType,LoadingType,BunkeringCapacity,LoadingCapacity
+Oil,Container,104,137
+1,,,
+RouteMatrix,,,
+,Japan,Los Angels,
+Japan,0,8843,
+Los Angels,8843,0,
