@@ -2,6 +2,7 @@ package org.simulation;
 
 import org.model.Fleet;
 import org.model.Market;
+import org.model.Port;
 import org.model.PortNetwork;
 
 public class SimpleSimulation extends Simulation{
@@ -27,8 +28,12 @@ public class SimpleSimulation extends Simulation{
 	@Override
 	public void timeNext() {
 		market.timeNext();
+		if(market.checkDemand()!=null){
+			market.addContract(fleet,portNetwork);
+		}
 		fleet.timeNext();
 		portNetwork.timeNext();
+		
 		
 	}
 
