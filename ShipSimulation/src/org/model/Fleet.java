@@ -1,14 +1,15 @@
 package org.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Fleet {
 	
-	private Ship[] ships;
-	private int maxFleetNum;
+	private List<Ship> ships;
 	private int fleetNum;
 	
-	public Fleet(int maxFleetNum){
-		ships = new Ship[maxFleetNum];
-		this.maxFleetNum = maxFleetNum;
+	public Fleet(){
+		ships = new ArrayList<Ship>();
 		fleetNum = 0;
 	}
 	public void timeNext(){
@@ -17,12 +18,12 @@ public abstract class Fleet {
 		}
 	}
 	public void add(Ship ship){
-		if (fleetNum < maxFleetNum){
-			ships[fleetNum] = ship;
-		}else{
-			//TO-DO: Expand array size and add.
-			System.out.println("Too much!");
-		}
+		ships.add(ship);
+		this.fleetNum ++;
+	}
+	
+	public List<Ship> getShips(){
+		return ships;
 	}
 
 }

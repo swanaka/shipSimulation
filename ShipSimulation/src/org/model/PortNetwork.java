@@ -17,6 +17,12 @@ public abstract class PortNetwork {
 		// 3. Check the ship's status and update ships' status and port status
 				
 	}
+	public Port getPort(String portName){
+		for (Port port : ports){
+			if (port.getName().equals(portName)) return port;
+		}
+		return null;
+	}
 	public void add(Port port){
 		//TO-DO
 	}

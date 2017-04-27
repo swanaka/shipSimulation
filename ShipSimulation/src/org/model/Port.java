@@ -56,7 +56,9 @@ public abstract class Port {
 		this.capacity = capacity;
 	}
 
-
+	public String getName(){
+		return this.name;
+	}
 
 	public Location getLoc() {
 		return loc;

@@ -7,7 +7,7 @@ import org.model.Status.FuelType;
 import org.model.Status.LoadingType;
 
 public abstract class Market {
-	private List<FuelPrice> fuels;
+	protected List<FuelPrice> fuels;
 	protected List<Demand> demands;
 	
 	public Market(){
@@ -40,9 +40,12 @@ public abstract class Market {
 		private double amountOfCargo;
 		private String departure;
 		private String destination;
+		private boolean isdemand;
 		
 		public abstract void timeNext();
-		public abstract boolean isDemand();
+		public boolean isDemand(){
+			return isdemand;
+		};
 
 		public LoadingType getCargoType() {
 			return cargoType;

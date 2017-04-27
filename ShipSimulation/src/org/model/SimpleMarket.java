@@ -28,16 +28,66 @@ public class SimpleMarket extends Market {
 			int startTime = demand.getStartTime();
 			int endTime = demand.getEndTime();
 			LoadingType cargoType = demand.getCargoType();
+			double amount = demand.getAmountOfCargo();
 			String departure = demand.getDeparture();
 			String destination = demand.getDestination();
-			
+			Port dep = portNetwork.getPort(departure);
+			Port des = portNetwork.getPort(destination);
 			//2. 間に合う船がいるかどうか調べる
+			List<Ship> ships = fleet.getShips();
+			double tmpFuel = 0;
+			Ship tmpShip = null;
+			List<Ship> assignedShip = new ArrayList<Ship>();
+			while(amount >0){
+				for (Ship ship : ships){
+					if (cargoType == ship.getCargoType()){
+						if (canTransport(ship,startTime,endTime,dep,des)){
+							//単位貨物あたりの燃料はいくらか?
+							double estimateFuel = estimateFuelCost(ship,startTime,endTime,dep,des,amount);
+							if (tmpFuel > estimateFuel){
+								tmpFuel = estimateFuel;
+								tmpShip = ship;
+							}
+						}
+					}
+					
+				}
+				assignedShip.add(tmpShip);
+				double done = getAvailableCargoAmount(tmpShip,startTime,endTime,dep,des,amount);
+				amount = amount -done;
+			}
 			//3. 運賃を決める
-			//4. 
+			double freight = decideFreight(ships,assignedShip,super.fuels,demand);
+			//4. スケジュールを入れる
+			makeContract(assignedShip,freight);
 			
 		}
 
 	}
+	private boolean canTransport(Ship ship, int startTime, int endTime, Port departure, Port desitination){
+		//TO-DO actual behavior
+		//対象の船の最終予定時間と場所を取得
+		//そこから出発地点まで来て、目的地まで最大船速で行く時間を計算(Loading、Bunkeringの時間を忘れない)
+		//その時間とendTimeとを比較する
+		return true;
+	}
+	private double estimateFuelCost(Ship ship, int startTime, int endTime, Port departure, Port destination, double amount){
+		//TO-DO actual behavior
+		
+		return 0;
+	}
+	private double getAvailableCargoAmount(Ship ship, int startTime, int endTime, Port departure, Port destination, double amount){
+		//TO-DO
+		return 0;
+	}
+	private double decideFreight(List<Ship> ships, List<Ship> assignedShip,List<FuelPrice> fuels, Demand demand){
+		//TO-DO
+		return 0;
+	}
+	private void makeContract(List<Ship> ships, double freight){
+		//TO-DO
+	}
+	
 	
 	public class ContainerDemand extends Demand{
 		
@@ -61,14 +111,7 @@ public class SimpleMarket extends Market {
 				super.setDestination("Los Angels");
 				counter = 0;
 			}
-			counter ++;
-			
-		}
-
-		@Override
-		public boolean isDemand() {
-			if (demandList.size() == 0) return false;
-			else return false;
+			counter ++;	
 		}
 		
 	}
