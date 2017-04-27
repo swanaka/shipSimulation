@@ -20,22 +20,22 @@ import org.util.CSVReader;
 public class Main {
 
 	public static void main(String[] args){
-		
+
 		Fleet fleet = loadInitialFleet("../../data/ship_config.csv");
 		PortNetwork ports= loadInitialPorts("../../data/port_config.csv");
-		//Market market = loadMarketInfo();
-		
+		//Market market = loadMarketInfo();/
+		//Shiraishi
 		//Simulation simulation = new SimpleSimulation(fleet, ports, market, 365);
-		
+
 	}
-	
+
 	private static Fleet loadInitialFleet(String filePath){
 		Fleet fleet = new SimpleFleet(1);
 		Ship ship = new SimpleShip(CSVReader.forParam(filePath));
 		fleet.add(ship);
 		return fleet;
 	}
-	
+
 	private static PortNetwork loadInitialPorts(String configFilePath){
 		List<String[]> data = CSVReader.forGeneral(configFilePath);
 		List<Port> ports = new ArrayList<Port>();
@@ -64,13 +64,13 @@ public class Main {
 				for (int j=1;j<1+portCount;j++){
 					for(int k=1;k<1+portCount;k++){
 						routeMatrix[j-1][k-1] = Double.parseDouble(data.get(i+1+j)[k]);
-					}	
+					}
 				}
 			}
 		}
 		PortNetwork portNetwork = new SimplePortNetwork(ports,routeMatrix);
 		return portNetwork;
 	}
-	
-	
+
+
 }
