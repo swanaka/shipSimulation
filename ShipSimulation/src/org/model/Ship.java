@@ -154,6 +154,11 @@ public abstract class Ship {
 	public Contract getLastSchedule(){
 		return this.schedule.get(this.schedule.size() - 1);
 	}
+	
+	
+	public Contract getContract(){
+		return this.schedule.get(0);
+	}
 	public abstract double estimateFuelAmount(Port departure, Port destination, PortNetwork network);
 
 	//Abstract inner class

@@ -67,23 +67,28 @@ public class SimpleShip extends Ship {
 	@Override
 	public void transport(int now) {
 
-		// 1. Get planned distance
-		int plannedTime = super.schedule.get(0).getEndTime();
-		double distance = super.remainingDistance; 
-		double plannedDistance = calcPlannedDistance(now, plannedTime, distance);
+//		// 1. Get planned distance
+//		int plannedTime = super.schedule.get(0).getEndTime();
+//		double distance = super.remainingDistance; 
+//		double plannedDistance = calcPlannedDistance(now, plannedTime, distance);
 
 		// 2. Calculate ship speed
-		double speed = plannedDistance;
+		double speed = this.speed;
 
 		// 3. Calculate FOC
 		double foc = super.engine.calcFOC(speed);
 
 		// 4. Update remainng distance, fuel, gas emission
-		// TO-DO update Location
-		double actualDis = calcActualDistance(distance);
+		double actualDis = speed;
 		super.remainingDistance -= actualDis;
 		super.amountOfFuel -= foc;
 		super.emssionedGas += calcGasEmission(foc);
+		
+		//5. Update status
+		if (remainingDistance < 0){
+			this.status = ShipStatus.WAIT;
+			this.schedule.get(0).getDestination().addWaitingShips(this);
+		}
 
 	}
 	
