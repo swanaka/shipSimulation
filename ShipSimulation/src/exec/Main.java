@@ -30,7 +30,7 @@ public class Main {
 	}
 	
 	private static Fleet loadInitialFleet(String filePath){
-		Fleet fleet = new SimpleFleet(1);
+		Fleet fleet = new SimpleFleet();
 		Ship ship = new SimpleShip(CSVReader.forParam(filePath));
 		fleet.add(ship);
 		return fleet;

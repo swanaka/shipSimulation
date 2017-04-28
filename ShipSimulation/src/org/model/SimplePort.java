@@ -92,10 +92,10 @@ public class SimplePort extends Port {
 			this.berthingFee = berthingFee;
 		}
 
-		public void accept(Ship ship){
+		public void accept(Ship ship,int now){
 			super.berthingShip = ship;
 			ship.setShipStatus(ShipStatus.BERTH);
-			ship.appropriateRevenue();
+			ship.appropriateRevenue(now);
 		}
 		public void berthing(){
 			loading();

@@ -36,9 +36,19 @@ public abstract class Ship {
 	protected int waitingTime;
 	
 	//Function
-	public abstract void timeNext();
-	public abstract void transport();
-	public abstract void appropriateRevenue();
+	public void timeNext(int now){
+		switch(this.status){
+		case TRANSPORT:
+			transport(now);
+		case WAIT:
+			this.waitingTime ++;
+		case BERTH:
+			break;
+		}
+
+	}
+	public abstract void transport(int now);
+	public abstract void appropriateRevenue(int now);
 
 	//Getter and Setter
 	public double getRemainingDistance() {

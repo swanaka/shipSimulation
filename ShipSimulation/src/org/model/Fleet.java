@@ -12,9 +12,9 @@ public abstract class Fleet {
 		ships = new ArrayList<Ship>();
 		fleetNum = 0;
 	}
-	public void timeNext(){
+	public void timeNext(int now){
 		for (Ship ship : ships){
-			ship.timeNext();
+			ship.timeNext(now);
 		}
 	}
 	public void add(Ship ship){

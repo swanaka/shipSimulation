@@ -11,10 +11,11 @@ public abstract class PortNetwork {
 		this.ports = ports;
 		this.routeMatrix = routeMatrix;
 	}
-	public void timeNext(){
-		// 1. Check the occupied and # of waiting ship and If it is available, change the ship's status => BERTH
-		// 2. BERTH, BUNKERING, LOADING, UNLOADING, Port provide service,
-		// 3. Check the ship's status and update ships' status and port status
+	public void timeNext(int now){
+		
+		for (Port port :this.ports){
+			port.timeNext(now);
+		}
 				
 	}
 	public Port getPort(String portName){

@@ -58,26 +58,11 @@ public class SimpleShip extends Ship {
 
 	}
 	
-	@Override
-	public void timeNext() {
-		
-		switch(super.status){
-			case TRANSPORT:
-				transport();
-			case WAIT:
-				super.waitingTime ++;
-			case BERTH:
-				break;
-
-		}
-
-	}
 
 	@Override
-	public void transport() {
+	public void transport(int now) {
 
 		// 1. Get planned distance
-		int now = Simulation.time;
 		int plannedTime = super.schedule.get(0).getEndTime();
 		double distance = super.remainingDistance; 
 		double plannedDistance = calcPlannedDistance(now, plannedTime, distance);
@@ -98,9 +83,9 @@ public class SimpleShip extends Ship {
 	}
 	
 	@Override
-	public void appropriateRevenue() {
+	public void appropriateRevenue(int now) {
 		Contract contract = super.schedule.get(0);
-		double revenue = contract.getIncome() + contract.getPenalty(Simulation.time);
+		double revenue = contract.getIncome() + contract.getPenalty(now);
 		super.owner.addCashFlow(revenue);
 		
 	}
