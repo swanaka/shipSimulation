@@ -1,11 +1,9 @@
 package org.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.model.Status.LoadingType;
-import org.simulation.Simulation;
 
 public class SimpleMarket extends Market {
 
@@ -89,26 +87,40 @@ public class SimpleMarket extends Market {
 	}
 	
 	
+	/**
+	 * Continer demand that is constant and happens at regular timing
+	 * @author Shinnosuke Wanaka
+	 * 
+	 */
 	public class ContainerDemand extends Demand{
 		
 		private int counter;
 		private int limit;
+		private double amount;
+		private int duration;
+		private String departure;
+		private String destination;
 		
 		public ContainerDemand(){
 			super();
 			setCargoType(LoadingType.Container);
 			this.counter = 0;
 			this.limit = 30;
+			amount = 6600;
+			duration = 720;
+			departure = "Japan";
+			destination = "Los Angels";
+			//To-Do read these prameters from csv or database;
 		}
 
 		@Override
-		public void timeNext() {
+		public void timeNext(int now) {
 			if (counter > this.limit){
-				super.setAmountOfCargo(6600);
-				super.setStartTime(Simulation.getCurrentTime());
-				super.setEndTime(Simulation.getCurrentTime()+720);
-				super.setDeparture("Japan");
-				super.setDestination("Los Angels");
+				super.setAmountOfCargo(amount);
+				super.setStartTime(now);
+				super.setEndTime(now + duration);
+				super.setDeparture(departure);
+				super.setDestination(destination);
 				counter = 0;
 			}
 			counter ++;	
@@ -116,13 +128,18 @@ public class SimpleMarket extends Market {
 		
 	}
 	
+	/**
+	 * OilPrice model which is expressed by binomial model
+	 * @author Shinnosuke Wanaka
+	 * 
+	 */
 	public class OilPrice extends FuelPrice{
 		private double upFactor;
 		private double downFactor;
 		private double upProbability;
 
 		@Override
-		public void timeNext() {
+		public void timeNext(int now) {
 			double n = Math.random();
 			if (n >= upProbability){
 				setPrice(super.price * upFactor);

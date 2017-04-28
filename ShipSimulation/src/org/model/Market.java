@@ -20,12 +20,12 @@ public abstract class Market {
 	public void addDemand(Demand demand){
 		demands.add(demand);
 	}
-	public void timeNext(){
+	public void timeNext(int now){
 		for(FuelPrice fuelPrice : fuels){
-			fuelPrice.timeNext();
+			fuelPrice.timeNext(now);
 		}
 		for (Demand demand : demands){
-			demand.timeNext();
+			demand.timeNext(now);
 		}
 		
 	}
@@ -42,7 +42,7 @@ public abstract class Market {
 		private String destination;
 		private boolean isdemand;
 		
-		public abstract void timeNext();
+		public abstract void timeNext(int now);
 		public boolean isDemand(){
 			return isdemand;
 		};
@@ -93,7 +93,7 @@ public abstract class Market {
 		protected FuelType fuelType;
 		protected double price;
 		
-		public abstract void timeNext();
+		public abstract void timeNext(int now);
 		
 		public FuelType getFuelType() {
 			return fuelType;
@@ -112,6 +112,10 @@ public abstract class Market {
 	}
 	
 	public abstract class Freight {
+		
+	}
+	
+	public abstract class Schedule{
 		
 	}
 
