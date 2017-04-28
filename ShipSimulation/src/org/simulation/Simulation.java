@@ -37,7 +37,7 @@ public abstract class Simulation {
 		//1 Update the market situation.
 		market.timeNext(now);
 		//2 Check demand, and if new demand happen, make a new contract, schedule to ship.
-		if(market.checkDemand()!=null){
+		if(market.checkDemand()){
 			market.addContract(fleet,portNetwork);
 		}
 		//3 Update ships' situation.

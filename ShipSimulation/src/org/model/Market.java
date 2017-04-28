@@ -30,7 +30,7 @@ public abstract class Market {
 		
 	}
 	
-	public abstract List<Demand> checkDemand();
+	public abstract boolean checkDemand();
 	public abstract void addContract(Fleet fleet, PortNetwork portNetwork);
 	
 	public abstract class Demand {

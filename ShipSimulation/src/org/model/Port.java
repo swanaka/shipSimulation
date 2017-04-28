@@ -30,6 +30,7 @@ public abstract class Port {
 	public abstract void addPortFacility(HashMap<String, String> param);
 	public abstract void addPortFacilities(HashMap<String, String> param, int num);
 	public abstract void addPortFacilities(HashMap<String, String>[] params);
+	public abstract int getTimeForReady(Ship ship);
 	public void gatewayForBerth(int now){
 		for (Ship ship : waitingShips){
 			PortFacility port = checkBerthing(ship);

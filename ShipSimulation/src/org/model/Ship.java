@@ -24,7 +24,7 @@ public abstract class Ship {
 	//Status of ship
 	protected Location loc;
 	protected double amountOfFuel;
-	protected double rationOfAccident;
+	protected double ratioOfAccident;
 	protected double amountOfCargo;
 	protected double remainingDistance;
 	protected double cashFlow;
@@ -34,6 +34,7 @@ public abstract class Ship {
 	protected LoadingStatus lStatus;
 	protected MaintenanceStatus mStatus;
 	protected int waitingTime;
+	protected double speed;
 	
 	//Function
 	public void timeNext(int now){
@@ -49,6 +50,9 @@ public abstract class Ship {
 	}
 	public abstract void transport(int now);
 	public abstract void appropriateRevenue(int now);
+	public abstract void addSchedule(int startTime, int endTime, Port departure, Port destination, double amount);
+	public abstract void addFreightToSchedule(double freight);
+	public abstract int getTime(double distance);
 
 	//Getter and Setter
 	public double getRemainingDistance() {
@@ -73,12 +77,12 @@ public abstract class Ship {
 		this.amountOfFuel = amountOfFuel;
 	}
 
-	public double getRationOfAccident() {
-		return rationOfAccident;
+	public double getRatioOfAccident() {
+		return ratioOfAccident;
 	}
 
-	public void setRationOfAccident(double rationOfAccident) {
-		this.rationOfAccident = rationOfAccident;
+	public void setRatioOfAccident(double rationOfAccident) {
+		this.ratioOfAccident = rationOfAccident;
 	}
 
 	public double getAmountOfCargo() {
@@ -147,6 +151,10 @@ public abstract class Ship {
 	public LoadingType getCargoType(){
 		return this.cargoHold.getCargoType();
 	}
+	public Contract getLastSchedule(){
+		return this.schedule.get(this.schedule.size() - 1);
+	}
+	public abstract double estimateFuelAmount(Port departure, Port destination, PortNetwork network);
 
 	//Abstract inner class
 	public abstract class Hull{
@@ -188,6 +196,7 @@ public abstract class Ship {
 		private Port destination;
 		private LoadingType cargoType;
 		private double cargoAmount;
+		protected double freightRate;
 
 		public int getStartTime() {
 			return startTime;
@@ -225,6 +234,9 @@ public abstract class Ship {
 		}
 		public void setCargoAmount(double cargoAmount) {
 			this.cargoAmount = cargoAmount;
+		}
+		public void setFreightRate(double freightRate){
+			this.freightRate = freightRate;
 		}
 		public abstract double getIncome() ;
 		public abstract double getPenalty(int time);

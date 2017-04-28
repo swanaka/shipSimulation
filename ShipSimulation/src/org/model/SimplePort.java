@@ -148,4 +148,10 @@ public class SimplePort extends Port {
 
 	}
 
+	@Override
+	public int getTimeForReady(Ship ship) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -7,6 +7,11 @@ import java.util.List;
 import org.model.Status.ShipStatus;
 import org.simulation.Simulation;
 
+/*
+ * Simple ship model.
+ * Assumption: 1 speed.
+ * @author Shinnosuke Wanaka
+ */
 public class SimpleShip extends Ship {
 	
 	//kinetic viscous coefficient
@@ -89,6 +94,7 @@ public class SimpleShip extends Ship {
 		super.owner.addCashFlow(revenue);
 		
 	}
+	
 
 	private double calcActualDistance(double distance){
 		return distance;
@@ -187,7 +193,7 @@ public class SimpleShip extends Ship {
 
 	public class OContract extends Contract{
 		
-		private double freightRate;
+		
 		private double penaltyRate;
 
 		private OContract(int startTime, int endTime, Port departure, Port destination){
@@ -211,6 +217,34 @@ public class SimpleShip extends Ship {
 			else return 0;
 		}
 		
+	}
+
+	@Override
+	public void addSchedule(int startTime, int endTime, Port departure, Port destination, double amount) {
+		Contract contract = new OContract(startTime,endTime,departure,destination);
+		contract.setCargoAmount(amount);
+		
+	}
+
+	@Override
+	public void addFreightToSchedule(double freight) {
+		this.schedule.get(this.schedule.size() - 1).setFreightRate(freight);
+		
+	}
+
+	@Override
+	public int getTime(double distance) {
+		int time = (int) Math.ceil(distance / this.speed);
+		return time;
+	}
+
+	@Override
+	public double estimateFuelAmount(Port departure, Port destination, PortNetwork network) {
+		// TODO Auto-gene
+		double foc = super.engine.calcFOC(this.speed);
+		double distance = network.getDistance(departure, destination);
+		double time = distance / this.speed;
+		return foc * time;
 	}
 
 	

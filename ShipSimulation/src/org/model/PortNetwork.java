@@ -5,11 +5,11 @@ import java.util.List;
 public abstract class PortNetwork {
 	
 	protected List<Port> ports;
-	protected double[][] routeMatrix;
+	protected static double[][] routeMatrix;
 
 	public PortNetwork (List<Port> ports, double[][] routeMatrix){
 		this.ports = ports;
-		this.routeMatrix = routeMatrix;
+		PortNetwork.routeMatrix = routeMatrix;
 	}
 	public void timeNext(int now){
 		
@@ -24,6 +24,14 @@ public abstract class PortNetwork {
 		}
 		return null;
 	}
+	
+	public double getDistance(Port port1,Port port2){
+		int i = ports.indexOf(port1);
+		int j = ports.indexOf(port2);
+		return routeMatrix[i][j];
+	}
+	
+
 	public void add(Port port){
 		//TO-DO
 	}
