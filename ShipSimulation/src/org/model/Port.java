@@ -48,10 +48,16 @@ public abstract class Port {
 	
 	public void timeNext(int now){
 		// 1. Check the occupied and # of waiting ship and If it is available, change the ship's status => BERTH
+		gatewayForBerth(now);
 		// 2. BERTH, BUNKERING, LOADING, UNLOADING, Port provide service,
-		// 3. Check the ship's status and update ships' status and port status
+		for (PortFacility facility : facilities){
+			facility.berthing();
+		}
 	}
 
+	public void addWaitingShips(Ship ship){
+		waitingShips.add(ship);
+	}
 	public int getCapacity() {
 		return capacity;
 	}

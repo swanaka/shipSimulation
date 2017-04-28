@@ -2,8 +2,11 @@ package org.model;
 
 import java.util.HashMap;
 
+import org.model.Status.BunkeringStatus;
 import org.model.Status.FuelType;
+import org.model.Status.LoadingStatus;
 import org.model.Status.LoadingType;
+import org.model.Status.MaintenanceStatus;
 import org.model.Status.ShipStatus;
 
 public class SimplePort extends Port {
@@ -104,6 +107,10 @@ public class SimplePort extends Port {
 			maintenance();
 			berthingShip.owner.addCashFlow(-1*this.berthingFee);
 			getOperator().addCashFlow(this.berthingFee);
+			if (berthingShip.lStatus==LoadingStatus.NO || berthingShip.bStatus == BunkeringStatus.NO || berthingShip.mStatus == MaintenanceStatus.NO){
+				berthingShip.status = ShipStatus.TRANSPORT;
+			}
+			
 		}
 		public void loading(){
 			switch(super.berthingShip.lStatus){
@@ -111,14 +118,17 @@ public class SimplePort extends Port {
 				super.berthingShip.setAmountOfCargo(super.berthingShip.getAmountOfCargo() + loadingCapacity);
 			default:;
 			}
+			
+			if (berthingShip.getContract().getCargoAmount() == berthingShip.getAmountOfCargo()) this.berthingShip.lStatus = LoadingStatus.NO;
 		}
 
 		public void unloading(){
 			switch(super.berthingShip.lStatus){
-			case LOADING:
+			case UNLOADING:
 				super.berthingShip.setAmountOfCargo(super.berthingShip.getAmountOfCargo() -  loadingCapacity);
 			default:;
 			}
+			if(berthingShip.getAmountOfCargo()==0) berthingShip.lStatus = LoadingStatus.NO;
 		}
 		
 		public void maintenance(){
@@ -127,6 +137,7 @@ public class SimplePort extends Port {
 				//TO-DO maintenance
 			default:;
 			}
+			//To-Do maintenance;
 		}
 
 		public boolean match(Ship ship){
@@ -143,7 +154,9 @@ public class SimplePort extends Port {
 				super.berthingShip.setAmountOfFuel(super.berthingShip.getAmountOfFuel() + bunkeringCapacity);
 			default:;
 			}
-			
+			if (berthingShip.getAmountOfFuel() == berthingShip.getFuelTank().getCapacity()){
+				berthingShip.bStatus = BunkeringStatus.NO;
+			}
 		}
 
 	}
