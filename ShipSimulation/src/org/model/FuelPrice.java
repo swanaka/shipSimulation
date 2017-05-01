@@ -7,6 +7,7 @@ public abstract class FuelPrice {
 	protected double price;
 	
 	public abstract void timeNext(int now);
+	public abstract double getPastPrice(int past);
 	
 	public FuelType getFuelType() {
 		return fuelType;
@@ -20,6 +21,5 @@ public abstract class FuelPrice {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
 	
 }

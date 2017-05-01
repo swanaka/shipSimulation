@@ -11,7 +11,17 @@ import org.model.Status.LoadingType;
  * @author Shinnosuke Wanaka
  */
 public class SimpleMarket extends Market {
-
+	private Freight freight;
+	public SimpleMarket(double upForStandard, double downForStandard, double pforStandard, double upForRate, double downForRate, double pforRate, double initialStandard, double initialRate){
+		super();
+		Freight freight = new Freight(upForStandard,downForStandard, pforStandard, upForRate, downForRate, pforRate,initialStandard,initialRate);
+		this.freight = freight;
+	}
+	@Override
+	public void timeNext(int now){
+		super.timeNext(now);
+		this.freight.timeNext(now);
+	}
 	@Override
 	public boolean checkDemand() {
 		if (super.demands.size() == 0) return false;
@@ -120,6 +130,51 @@ public class SimpleMarket extends Market {
 	private void makeContract(List<Ship> ships, double freight){
 		for (Ship ship: ships){
 			ship.addFreightToSchedule(freight);
+		}
+	}
+	
+	public class Freight{
+		private double standardFreight;
+		private double freightRate;
+		
+		private double upforStandard;
+		private double downforStandard;
+		private double pforStandard;
+		
+		private double upforRate;
+		private double downforRate;
+		private double pforRate;
+		
+		public Freight(double upforStandard,double downforStandard,double pforStandard,double upforRate, double downforRate, double pforRate, double initialStandard, double initialRate){
+			this.upforStandard = upforStandard;
+			this.downforStandard = downforStandard;
+			this.pforStandard = pforStandard;
+			this.upforRate = upforRate;
+			this.downforRate = downforRate;
+			this.pforRate = pforRate;
+			
+			this.standardFreight = initialStandard;
+			this.freightRate = initialRate;
+		}
+		public void timeNext(int now){
+			double n = Math.random();
+			if (n >= pforStandard){
+				this.standardFreight = this.standardFreight * upforStandard;
+			}else{
+				this.standardFreight = this.standardFreight * downforStandard;
+			}
+			
+			double m = Math.random();
+			
+				double oilprice = fuels.get(0).price;
+				double preOilprice = fuels.get(0).getPastPrice(-1);
+			if (m >= pforRate){
+				this.freightRate = this.freightRate * upforRate;
+				this.freightRate = this.freightRate - (oilprice - preOilprice)/preOilprice * this.freightRate;
+			}else{
+				this.freightRate = this.freightRate * downforRate;
+				this.freightRate = this.freightRate - (oilprice - preOilprice)/preOilprice * this.freightRate;
+			}
 		}
 	}
 	

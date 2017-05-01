@@ -33,12 +33,15 @@ public class Main {
 		Market market = loadMarketInfo("../../data/market_config.csv");
 		
 		Simulation simulation = new SimpleSimulation(fleet, ports, market, 365);
+		System.out.println("Simulation Start");
+		simulation.execute();
+		System.out.println("Simulation End");
 		
 	}
 	
 	private static Fleet loadInitialFleet(String filePath){
 		Fleet fleet = new SimpleFleet();
-		List<String[]> data =CSVReader.forGeneral(filePath);
+		//List<String[]> data =CSVReader.forGeneral(filePath);
 		double speed = 28;
 		LoadingType cargoType = LoadingType.HFO;
 		double cargoAmount = 300000;
@@ -88,12 +91,21 @@ public class Main {
 	}
 	
 	private static Market loadMarketInfo(String filePath){
-		Market market = new SimpleMarket();
-		List<String[]> data = CSVReader.forGeneral(filePath);
+		double upforStandard = 0;
+		double downforStandard = 0;
+		double pforStandard = 0;
+		double upforRate = 0;
+		double downforRate = 0;
+		double pforRate = 0;
+		double initialStandard = 0;
+		double initialRate = 0;
+		Market market = new SimpleMarket(upforStandard,downforStandard,pforStandard,upforRate,downforRate,pforRate,initialStandard,initialRate);
+		//List<String[]> data = CSVReader.forGeneral(filePath);
+		double initialPrice = 0;
 		double upFactor = 0;
 		double downFactor = 0;
 		double probability = 0;
-		FuelPrice oilprice = new OilPrice(upFactor,downFactor,probability);
+		FuelPrice oilprice = new OilPrice(initialPrice,upFactor,downFactor,probability);
 		
 		Demand demand = new SimpleDemand();
 		market.addDemand(demand);
