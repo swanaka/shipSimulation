@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.model.Demand;
 import org.model.Fleet;
 import org.model.Market;
+import org.model.FuelPrice;
+import org.model.OilPrice;
 import org.model.Port;
 import org.model.SimpleShip;
+import org.model.Status.FuelType;
+import org.model.Status.LoadingType;
 import org.model.PortNetwork;
 import org.model.Ship;
+import org.model.SimpleDemand;
 import org.model.SimpleFleet;
+import org.model.SimpleMarket;
 import org.model.SimplePort;
 import org.model.SimplePortNetwork;
 import org.simulation.SimpleSimulation;
@@ -23,15 +30,23 @@ public class Main {
 		
 		Fleet fleet = loadInitialFleet("../../data/ship_config.csv");
 		PortNetwork ports= loadInitialPorts("../../data/port_config.csv");
-		//Market market = loadMarketInfo();
+		Market market = loadMarketInfo("../../data/market_config.csv");
 		
-		//Simulation simulation = new SimpleSimulation(fleet, ports, market, 365);
+		Simulation simulation = new SimpleSimulation(fleet, ports, market, 365);
 		
 	}
 	
 	private static Fleet loadInitialFleet(String filePath){
 		Fleet fleet = new SimpleFleet();
-		Ship ship = new SimpleShip(CSVReader.forParam(filePath));
+		List<String[]> data =CSVReader.forGeneral(filePath);
+		double speed = 28;
+		LoadingType cargoType = LoadingType.HFO;
+		double cargoAmount = 300000;
+		double foc = 1.24;
+		double fuelCapacity = 5000;
+		FuelType fuelType = FuelType.OIL;
+		
+		Ship ship = new SimpleShip(speed, cargoType, cargoAmount, foc, fuelCapacity, fuelType);
 		fleet.add(ship);
 		return fleet;
 	}
@@ -70,6 +85,21 @@ public class Main {
 		}
 		PortNetwork portNetwork = new SimplePortNetwork(ports,routeMatrix);
 		return portNetwork;
+	}
+	
+	private static Market loadMarketInfo(String filePath){
+		Market market = new SimpleMarket();
+		List<String[]> data = CSVReader.forGeneral(filePath);
+		double upFactor = 0;
+		double downFactor = 0;
+		double probability = 0;
+		FuelPrice oilprice = new OilPrice(upFactor,downFactor,probability);
+		
+		Demand demand = new SimpleDemand();
+		market.addDemand(demand);
+		market.addFuelPrice(oilprice);
+		
+		return market;
 	}
 	
 	

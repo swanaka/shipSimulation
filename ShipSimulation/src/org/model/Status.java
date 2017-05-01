@@ -34,5 +34,5 @@ public class Status {
 		}
 	}
 	
-	public enum LoadingType{Container,}
+	public enum LoadingType{Container, HFO}
 }
