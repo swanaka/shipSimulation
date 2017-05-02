@@ -2,9 +2,14 @@ package org.model;
 
 public class Status {
 	public enum ShipStatus{
-		TRANSPORT,
-		WAIT,
-		BERTH,
+		TRANSPORT("Transporting"),
+		WAIT("Waiting"),
+		BERTH("Berthing");
+
+		private final String name;
+		private ShipStatus(final String name){
+			this.name = name;
+		}
 	}
 
 	public enum BunkeringStatus{
@@ -21,7 +26,6 @@ public class Status {
 		YES,
 		NO,
 	}
-	
 	
 	public enum FuelType{
 		OIL("Oil"), 
