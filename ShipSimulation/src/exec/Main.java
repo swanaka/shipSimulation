@@ -19,10 +19,9 @@ import org.model.PortNetwork;
 import org.model.Ship;
 import org.model.ShipOperator;
 import org.model.SimpleDemand;
-import org.model.SimpleFleet;
+
 
 import org.model.SimplePort;
-import org.model.SimplePortNetwork;
 import org.simulation.SimpleSimulation;
 import org.simulation.Simulation;
 import org.util.CSVReader;

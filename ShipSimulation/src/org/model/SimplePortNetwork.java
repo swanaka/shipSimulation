@@ -1,6 +1,5 @@
 package org.model;
 
-import java.util.List;
 
 
 public class SimplePortNetwork {

@@ -2,7 +2,6 @@ package org.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.model.Status.FuelType;
 import org.model.Status.LoadingType;
 
 public class Market {
@@ -76,7 +75,7 @@ public class Market {
 			Port dep = PortNetwork.getPort(departure);
 			Port des = PortNetwork.getPort(destination);
 			//2. 間に合う船がいるかどうか調べる
-			List<Ship> ships = Fleet.getInstance().getShips();
+			List<Ship> ships = Fleet.getShips();
 			double tmpFuel = 0;
 			Ship tmpShip = null;
 			List<Ship> assignedShip = new ArrayList<Ship>();

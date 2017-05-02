@@ -1,13 +1,11 @@
 package org.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 
 import org.model.Status.FuelType;
 import org.model.Status.LoadingType;
 import org.model.Status.ShipStatus;
-import org.simulation.Simulation;
+
 
 /*
  * Simple ship model.
@@ -67,13 +65,13 @@ public class SimpleShip extends Ship {
 	}
 	
 
-	private double calcActualDistance(double distance){
-		return distance;
-	}
-
-	private double calcPlannedDistance(int now, int plannedTime, double distance){
-		return distance / (plannedTime - now);
-	}
+//	private double calcActualDistance(double distance){
+//		return distance;
+//	}
+//
+//	private double calcPlannedDistance(int now, int plannedTime, double distance){
+//		return distance / (plannedTime - now);
+//	}
 
 	private double calcGasEmission(double foc){
 		return foc;

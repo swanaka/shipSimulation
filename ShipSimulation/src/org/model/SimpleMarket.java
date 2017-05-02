@@ -1,9 +1,6 @@
 package org.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.model.Status.LoadingType;
 
 /*
  * Simple market model
