@@ -2,9 +2,9 @@ package org.model;
 
 public abstract class ShipOperator {
 	//Configuration
-	private String name;
-	private Fleet fleet;
-	private double fixedCost;
+	protected  String name;
+	protected Fleet fleet;
+	protected double fixedCost;
 
 	//Status
 	private double cashFlow;
