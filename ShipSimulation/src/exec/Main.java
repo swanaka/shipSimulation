@@ -7,17 +7,20 @@ import java.util.List;
 import org.model.Demand;
 import org.model.Fleet;
 import org.model.Market;
+import org.model.Freight;
 import org.model.FuelPrice;
 import org.model.OilPrice;
 import org.model.Port;
 import org.model.SimpleShip;
+import org.model.SimpleShipOperator;
 import org.model.Status.FuelType;
 import org.model.Status.LoadingType;
 import org.model.PortNetwork;
 import org.model.Ship;
+import org.model.ShipOperator;
 import org.model.SimpleDemand;
 import org.model.SimpleFleet;
-import org.model.SimpleMarket;
+
 import org.model.SimplePort;
 import org.model.SimplePortNetwork;
 import org.simulation.SimpleSimulation;
@@ -28,19 +31,18 @@ public class Main {
 
 	public static void main(String[] args){
 		
-		Fleet fleet = loadInitialFleet("../../data/ship_config.csv");
-		PortNetwork ports= loadInitialPorts("../../data/port_config.csv");
-		Market market = loadMarketInfo("../../data/market_config.csv");
+		loadInitialFleet("../../data/ship_config.csv");
+		loadInitialPorts("../../data/port_config.csv");
+		loadMarketInfo("../../data/market_config.csv");
 		
-		Simulation simulation = new SimpleSimulation(fleet, ports, market, 365);
+		Simulation simulation = new SimpleSimulation(365);
 		System.out.println("Simulation Start");
 		simulation.execute();
 		System.out.println("Simulation End");
 		
 	}
 	
-	private static Fleet loadInitialFleet(String filePath){
-		Fleet fleet = new SimpleFleet();
+	private static void loadInitialFleet(String filePath){
 		//List<String[]> data =CSVReader.forGeneral(filePath);
 		double speed = 28;
 		LoadingType cargoType = LoadingType.HFO;
@@ -50,11 +52,12 @@ public class Main {
 		FuelType fuelType = FuelType.OIL;
 		
 		Ship ship = new SimpleShip(speed, cargoType, cargoAmount, foc, fuelCapacity, fuelType);
-		fleet.add(ship);
-		return fleet;
+		ShipOperator operator = new SimpleShipOperator("NYK");
+		ship.setOwner(operator);
+		Fleet.add(ship);
 	}
 	
-	private static PortNetwork loadInitialPorts(String configFilePath){
+	private static void loadInitialPorts(String configFilePath){
 		List<String[]> data = CSVReader.forGeneral(configFilePath);
 		List<Port> ports = new ArrayList<Port>();
 		double[][] routeMatrix = null;
@@ -86,11 +89,10 @@ public class Main {
 				}
 			}
 		}
-		PortNetwork portNetwork = new SimplePortNetwork(ports,routeMatrix);
-		return portNetwork;
+		PortNetwork.setPortSettings(ports,routeMatrix);
 	}
 	
-	private static Market loadMarketInfo(String filePath){
+	private static void loadMarketInfo(String filePath){
 		double upforStandard = 0;
 		double downforStandard = 0;
 		double pforStandard = 0;
@@ -99,7 +101,7 @@ public class Main {
 		double pforRate = 0;
 		double initialStandard = 0;
 		double initialRate = 0;
-		Market market = new SimpleMarket(upforStandard,downforStandard,pforStandard,upforRate,downforRate,pforRate,initialStandard,initialRate);
+		Freight freight = new Freight(upforStandard,downforStandard,pforStandard,upforRate,downforRate,pforRate,initialStandard,initialRate);
 		//List<String[]> data = CSVReader.forGeneral(filePath);
 		double initialPrice = 0;
 		double upFactor = 0;
@@ -108,10 +110,9 @@ public class Main {
 		FuelPrice oilprice = new OilPrice(initialPrice,upFactor,downFactor,probability);
 		
 		Demand demand = new SimpleDemand();
-		market.addDemand(demand);
-		market.addFuelPrice(oilprice);
-		
-		return market;
+		Market.addDemand(demand);
+		Market.addFuelPrice(oilprice);
+		Market.addFreight(freight);
 	}
 	
 	

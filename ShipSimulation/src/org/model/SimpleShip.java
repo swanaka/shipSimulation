@@ -144,9 +144,9 @@ public class SimpleShip extends Ship {
 	}
 
 	@Override
-	public double estimateFuelAmount(Port departure, Port destination, PortNetwork network) {
+	public double estimateFuelAmount(Port departure, Port destination) {
 		double foc = super.engine.calcFOC(this.speed);
-		double distance = network.getDistance(departure, destination);
+		double distance = PortNetwork.getDistance(departure, destination);
 		double time = distance / this.speed;
 		return foc * time;
 	}

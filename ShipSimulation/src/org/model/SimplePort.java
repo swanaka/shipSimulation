@@ -109,6 +109,13 @@ public class SimplePort extends Port {
 			getOperator().addCashFlow(this.berthingFee);
 			if (berthingShip.lStatus==LoadingStatus.NO || berthingShip.bStatus == BunkeringStatus.NO || berthingShip.mStatus == MaintenanceStatus.NO){
 				berthingShip.status = ShipStatus.TRANSPORT;
+				if(!berthingShip.getContract().getDeparture().equals(this)) berthingShip.removeSchedule();
+				if (this.equals(berthingShip.getContract().getDeparture())){
+					//目的地を設定(RemainingDistanceを設定)
+					//berthingShip.setRemainingDistance(PortNet;
+				}else {
+					//目的地を設定
+				}
 			}
 			
 		}

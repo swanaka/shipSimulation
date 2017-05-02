@@ -96,6 +96,9 @@ public abstract class Ship {
 	public void setShipStatus(ShipStatus status){
 		this.status = status;
 	}
+	public ShipStatus getShipStatus(){
+		return this.status;
+	}
 
 	public Hull getHull() {
 		return hull;
@@ -159,7 +162,12 @@ public abstract class Ship {
 	public Contract getContract(){
 		return this.schedule.get(0);
 	}
-	public abstract double estimateFuelAmount(Port departure, Port destination, PortNetwork network);
+	
+	public void removeSchedule(){
+		this.schedule.remove(0);
+	}
+	public abstract double estimateFuelAmount(Port departure, Port destination);
+	
 
 	//Abstract inner class
 	public abstract class Hull{

@@ -3,26 +3,27 @@ package org.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Fleet {
+public class Fleet {
 	
-	private List<Ship> ships;
-	private int fleetNum;
+	private static List<Ship> ships;
+	private static Fleet fleet = new Fleet();
 	
-	public Fleet(){
+	private Fleet(){
 		ships = new ArrayList<Ship>();
-		fleetNum = 0;
 	}
-	public void timeNext(int now){
+	public static Fleet getInstance(){
+		return fleet;
+	}
+	public static void timeNext(int now){
 		for (Ship ship : ships){
 			ship.timeNext(now);
 		}
 	}
-	public void add(Ship ship){
+	public static void add(Ship ship){
 		ships.add(ship);
-		this.fleetNum ++;
 	}
 	
-	public List<Ship> getShips(){
+	public static List<Ship> getShips(){
 		return ships;
 	}
 

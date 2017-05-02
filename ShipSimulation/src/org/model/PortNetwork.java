@@ -1,33 +1,39 @@
 package org.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PortNetwork {
+public class PortNetwork {
 	
-	protected List<Port> ports;
-	protected static double[][] routeMatrix;
-
-	public PortNetwork (List<Port> ports, double[][] routeMatrix){
-		this.ports = ports;
-		PortNetwork.routeMatrix = routeMatrix;
+	private static List<Port> portList;
+	private static double[][] routeMatrix;
+	private static PortNetwork portnetwork = new PortNetwork();
+	
+	private PortNetwork(){
+		portList = new ArrayList<Port>();
+		routeMatrix = new double[0][0];
 	}
-	public void timeNext(int now){
+	public static PortNetwork getInstance(){
+		return portnetwork;
+	}
+
+	public static void timeNext(int now){
 		
-		for (Port port :this.ports){
+		for (Port port : portList){
 			port.timeNext(now);
 		}
 				
 	}
-	public Port getPort(String portName){
-		for (Port port : ports){
+	public static Port getPort(String portName){
+		for (Port port : portList){
 			if (port.getName().equals(portName)) return port;
 		}
 		return null;
 	}
 	
-	public double getDistance(Port port1,Port port2){
-		int i = ports.indexOf(port1);
-		int j = ports.indexOf(port2);
+	public static double getDistance(Port port1,Port port2){
+		int i = portList.indexOf(port1);
+		int j = portList.indexOf(port2);
 		return routeMatrix[i][j];
 	}
 	
@@ -39,6 +45,10 @@ public abstract class PortNetwork {
 		//TO-DO
 	}
 	public List<Port> getPorts() {
-		return ports;
+		return portList;
+	}
+	public static void setPortSettings(List<Port> pList,double[][] route){
+		portList = pList;
+		routeMatrix = route;
 	}
 }

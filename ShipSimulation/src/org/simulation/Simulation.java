@@ -11,17 +11,11 @@ public abstract class Simulation {
 	//Status
 	protected int now;
 	
-	private Fleet fleet;
-	private PortNetwork portNetwork;
-	private Market market;
-	
 	//Function
 	public abstract void save(int now);
 	
-	public Simulation(Fleet fleet, PortNetwork portNetwork, Market market,int endTime){
-		this.fleet = fleet;
-		this.portNetwork = portNetwork;
-		this.market = market;
+	public Simulation(int endTime){
+		
 		setEndTime(endTime);
 	}
 	
@@ -35,15 +29,15 @@ public abstract class Simulation {
 	
 	public void timeNext(int now) {
 		//1 Update the market situation.
-		market.timeNext(now);
+		Market.timeNext(now);
 		//2 Check demand, and if new demand happen, make a new contract, schedule to ship.
-		if(market.checkDemand()){
-			market.addContract(fleet,portNetwork);
+		if(Market.checkDemand()){
+			Market.addContract();
 		}
 		//3 Update ships' situation.
-		fleet.timeNext(now);
+		Fleet.timeNext(now);
 		//4 Update ports' situation
-		portNetwork.timeNext(now);
+		PortNetwork.timeNext(now);
 		
 		
 	}
